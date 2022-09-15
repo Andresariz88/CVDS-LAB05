@@ -42,4 +42,29 @@ public class SunshineServlet extends HttpServlet {
             responseWriter.flush();
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Writer responseWriter = resp.getWriter();
+        Optional<String> optId = Optional.ofNullable(req.getParameter("id"));
+        String id = optId.isPresent() && !optId.get().isEmpty() ? optId.get() : "";
+        try {
+            Todo todo = Service.getTodo(Integer.parseInt(id));
+            List<Todo> todos = new ArrayList<Todo>();
+            todos.add(todo);
+            String msg = Service.todosToHTMLTable(todos);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            responseWriter.write(msg);
+        } catch (FileNotFoundException e) {
+            responseWriter.write("No encontrado");
+        } catch (NumberFormatException e) {
+            responseWriter.write("Requerimiento inválido");
+        } catch (MalformedURLException e) {
+            responseWriter.write("Error interno en el servidor");
+        } catch (Exception e) {
+            responseWriter.write("Requerimiento inválido.");
+        } finally {
+            responseWriter.flush();
+        }
+    }
 }
