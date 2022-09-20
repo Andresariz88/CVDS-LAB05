@@ -31,10 +31,12 @@ public class SunshineServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_OK);
             responseWriter.write(msg);
         } catch (FileNotFoundException e) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             responseWriter.write("No encontrado");
         } catch (NumberFormatException e) {
             responseWriter.write("Requerimiento inválido");
         } catch (MalformedURLException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             responseWriter.write("Error interno en el servidor");
         } catch (Exception e) {
             responseWriter.write("Requerimiento inválido.");
@@ -57,10 +59,12 @@ public class SunshineServlet extends HttpServlet {
             responseWriter.write(msg);
         } catch (FileNotFoundException e) {
             responseWriter.write("No encontrado");
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } catch (NumberFormatException e) {
             responseWriter.write("Requerimiento inválido");
         } catch (MalformedURLException e) {
             responseWriter.write("Error interno en el servidor");
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             responseWriter.write("Requerimiento inválido.");
         } finally {
